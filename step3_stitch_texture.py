@@ -5,7 +5,7 @@ import os
 import cv2
 import numpy as np
 import argparse
-import cPickle as pkl
+import pickle as pkl
 
 from tqdm import trange
 
@@ -75,7 +75,7 @@ if __name__ == '__main__':
         help="Texture output file (JPG or PNG)")
 
     parser.add_argument(
-        '--iter', '-t', default=15, type=int,
+        '--iter', '-t', default=50, type=int,
         help="Texture optimization steps")
 
     args = parser.parse_args()

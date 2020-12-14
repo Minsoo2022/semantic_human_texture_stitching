@@ -5,7 +5,7 @@ import cv2
 import os
 import argparse
 import numpy as np
-import cPickle as pkl
+import pickle as pkl
 
 from tqdm import tqdm
 from glob import glob
@@ -17,7 +17,7 @@ from tex.texture import TextureData
 
 
 def main(data_file, frame_dir, segm_dir, out):
-    data = pkl.load(open(data_file, 'rb'))
+    data = pkl.load(open(data_file, 'rb'), encoding='iso-8859-1')
 
     segm_files = np.array(sorted(glob(os.path.join(segm_dir, '*.png')) + glob(os.path.join(segm_dir, '*.jpg'))))
     frame_files = np.array(sorted(glob(os.path.join(frame_dir, '*.png')) + glob(os.path.join(frame_dir, '*.jpg'))))
@@ -41,6 +41,7 @@ def main(data_file, frame_dir, segm_dir, out):
 
     for i, (v, frame_file, segm_file) in enumerate(tqdm(zip(verts, frame_files, segm_files))):
         frame = cv2.imread(frame_file) / 255.
+        #frame = cv2.resize(frame, dsize=(1080, 1080), interpolation=cv2.INTER_LINEAR)
         segm = read_segmentation(segm_file) / 255.
         mask = np.float32(np.any(segm > 0, axis=-1))
 

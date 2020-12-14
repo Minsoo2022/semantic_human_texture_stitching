@@ -3,12 +3,12 @@
 
 import cv2
 import numpy as np
-import cPickle as pkl
+import pickle as pkl
 
 from skimage.measure import compare_ssim
 
 from stitch.texels_fusion import Stitcher
-from iso import Isomapper
+from .iso import Isomapper
 from util.visibility import VisibilityRenderer
 from util.labels import LABELS_REDUCED, to_ids
 
@@ -94,7 +94,7 @@ class Texture:
 
         if self.segm_template is not None and self.gmms is not None:
             for i, color_id in enumerate(LABELS_REDUCED):
-                if color_id != 'Unseen' and color_id != 'BG':
+                if color_id != 'Unseen' and color_id != 'BG' and color_id != 'Hat':
                     where = np.all(self.segm_template == LABELS_REDUCED[color_id], axis=2)
                     w = 10. if color_id in ['Arms', 'Legs'] else 1.
 

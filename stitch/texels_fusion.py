@@ -5,7 +5,7 @@ import gco
 import cv2
 import os
 import numpy as np
-import cPickle as pkl
+import pickle as pkl
 
 from scipy import signal
 from skimage import color
@@ -22,7 +22,7 @@ class Stitcher:
     def __init__(self, seams, tex_res, mask, edge_idx_file='assets/basicModel_edge_idx_1000.pkl'):
         self.tex_res = tex_res
         self.seams = seams
-        self.edge_idx = pkl.load(open(edge_idx_file, 'rb'))
+        self.edge_idx = pkl.load(open(edge_idx_file, 'rb'), encoding='iso-8859-1')
 
         dr_v = signal.convolve2d(mask, [[-1, 1]])[:, 1:]
         dr_h = signal.convolve2d(mask, [[-1], [1]])[1:, :]
@@ -60,7 +60,7 @@ class Stitcher:
         label_maps = np.zeros((2, self.tex_res, self.tex_res))
 
         for l in range(2):
-            label_maps[l] = cv2.blur(np.float32(labels == l), (self.tex_res / 100, self.tex_res / 100))  # TODO
+            label_maps[l] = cv2.blur(np.float32(labels == l), (self.tex_res // 100, self.tex_res // 100))  # TODO
 
         norm_masks = np.sum(label_maps, axis=0)
         result = (np.atleast_3d(label_maps[0]) * im0 + np.atleast_3d(label_maps[1]) * im1)
