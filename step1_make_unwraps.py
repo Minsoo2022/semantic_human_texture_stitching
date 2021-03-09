@@ -45,7 +45,7 @@ def main(data_file, frame_dir, segm_dir, out):
         segm = read_segmentation(segm_file) / 255.
         mask = np.float32(np.any(segm > 0, axis=-1))
 
-        camera.set(v=v)
+        camera.set(v=v.astype('float32'))
 
         id = os.path.splitext(os.path.basename(frame_file))[0]
 

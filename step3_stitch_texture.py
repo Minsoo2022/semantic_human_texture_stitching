@@ -46,7 +46,7 @@ def main(unwrap_dir, segm_template_file, gmm_file, out_file, num_iter):
 
         rl = np.random.choice(num_labels)
         texture_agg, labels = texture.add_iso(isos[rl], visibilities[rl], rl, inpaint=i == (num_iter-1))
-
+        cv2.imwrite(out_file.replace('.jpg',f'_{i}.jpg'), np.uint8(255 * texture_agg))
     print('saving {}...'.format(os.path.basename(out_file)))
     cv2.imwrite(out_file, np.uint8(255 * texture_agg))
 
