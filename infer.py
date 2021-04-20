@@ -16,15 +16,12 @@ args = parser.parse_args()
 name = ' '.join((args.dir).split('/')).split()[-1]
 os.makedirs(os.path.join(args.dir,'unwraps'),exist_ok=True)
 step1_make_unwraps.main(os.path.join(args.dir,'frame_data.pkl'),os.path.join(args.dir,'frames'),os.path.join(args.dir,'segmentations'),os.path.join(args.dir,'unwraps'))
-#step1_make_unwraps.main(os.path.join(args.dir,'frame_data.pkl'),os.path.join(args.dir,'frames_histogram_rgb'),os.path.join(args.dir,'segmentations'),os.path.join(args.dir,'unwarps'))
 step2_segm_vote_gmm.main(os.path.join(args.dir,'unwraps'),os.path.join(args.dir,'segm.png'),os.path.join(args.dir,'gmm.pkl'))
-#step2_segm_vote_gmm.main(os.path.join(args.dir,'unwarps'),os.path.join(args.dir,'segm.png'),os.path.join(args.dir,'gmm.pkl'))
-step3_stitch_texture.main(os.path.join(args.dir,'unwraps'), os.path.join(args.dir,'segm.png'), os.path.join(args.dir,'gmm.pkl'), os.path.join(args.dir,name+'.jpg'),1)
-#step3_stitch_texture.main(os.path.join(args.dir,'unwarps'), os.path.join(args.dir,'segm.png'), os.path.join(args.dir,'gmm.pkl'), os.path.join(args.dir,name+'.jpg'),10)
+step3_stitch_texture.main(os.path.join(args.dir,'unwraps'), os.path.join(args.dir,'segm.png'), os.path.join(args.dir,'gmm.pkl'), os.path.join(args.dir,name+'_octopus.jpg'),20)
 
 filename = os.path.join(args.dir,name+'.obj')
-body = Mesh(filename=filename)
-body_tex = filename.replace('.obj', '.jpg')
+body = Mesh(filename=filename.replace(name+'.obj',name+'_octopus.obj'))
+body_tex = filename.replace('.obj', '_octopus.jpg')
 if not os.path.exists(body_tex):
     body_tex = 'tex_{}'.format(body_tex)
 
@@ -39,5 +36,4 @@ hvt = mappingt.dot(vt.ravel()).reshape(-1, 3)[:, :2]
 body_hres.vt, body_hres.ft = hvt, hft
 
 body_hres.set_texture_image(body_tex)
-body_hres.write_obj(os.path.join(filename.replace('.obj', '_hres.obj')))
-print(filename)
+body_hres.write_obj(os.path.join(filename.replace('.obj', '_octopus_hres.obj')))
